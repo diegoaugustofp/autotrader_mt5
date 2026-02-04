@@ -1,6 +1,15 @@
 # autotrader_mt5
 Plataforma em Python para execução automática de estratégias de trade integradas ao MetaTrader 5 (MT5), com foco em ativos negociados em bolsas americanas (ações, índices, ETFs, futuros, conforme suportado pela corretora no MT5).
 
+# Escopo e objetivos
+- Automatizar execução de estratégias de trade definidas pelo usuário no MT5.
+- Suportar múltiplas estratégias simultâneas, com configurações isoladas.
+- Permitir configuração de parâmetros de risco (tamanho da posição, stop loss, take profit, risco por trade, risco diário).
+- Respeitar janelas de horário de negociação baseadas em mercado americano (por exemplo, horário de NY).
+- Registrar logs detalhados de sinais, ordens, execuções e erros.
+- Facilitar backtest (mínimo: simulação básica em dados históricos obtidos via MT5).
+
+Para mais detalhes acessar o [Guia de Requisitos Funcionais](docs/requisitos_funcinais.md)
 
 # Design (arquitetura)
 
@@ -13,6 +22,7 @@ Arquitetura em camadas:
 - **Camada de persistência:** armazenamento de configurações (por exemplo, SQLite ou arquivos YAML/JSON) e logs.
 - **Interface (CLI e opcional web).**
 
+Para mais detalhes acessar o [Guia de Arquitetura](docs/arquitetura.md)
 ​
 ## Estrutura de projeto Python (sugerida)
 O projeto segue seguinte estrutura de pastas:
