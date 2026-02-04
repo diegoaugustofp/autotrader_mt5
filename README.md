@@ -9,7 +9,7 @@ Plataforma em Python para execução automática de estratégias de trade integr
 - Registrar logs detalhados de sinais, ordens, execuções e erros.
 - Facilitar backtest (mínimo: simulação básica em dados históricos obtidos via MT5).
 
-Para mais detalhes acessar o [Guia de Requisitos Funcionais](docs/requisitos_funcinais.md)
+Para mais detalhes acessar o [Guia de Requisitos Funcionais](docs/requisitos_funcionais.md)
 
 # Design (arquitetura)
 
