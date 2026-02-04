@@ -6,7 +6,10 @@ from typing import Dict, Any
 
 class StrategyType(Enum):
     """Enum for strategy types providing type safety and faster comparisons."""
+<<<<<<< devin/1770200586-strategy-type-enum
+=======
 
+>>>>>>> main
     MEAN_REVERSION = "mean_reversion"
     TREND_FOLLOWING = "trend_following"
     BREAKOUT = "breakout"
