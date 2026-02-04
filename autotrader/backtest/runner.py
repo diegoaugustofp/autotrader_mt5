@@ -8,6 +8,7 @@ from ..core.risk import RiskManager
 
 class Timeframe(Enum):
     """Enum for timeframes providing type safety and preventing invalid values."""
+
     M1 = "M1"
     M5 = "M5"
     M15 = "M15"

@@ -6,8 +6,15 @@ from ..infra.mt5_client import MT5Client
 
 
 class StrategyInstance:
-    def __init__(self, strategy: BaseStrategy, risk_manager: RiskManager,
-                 symbols: List[str], start_time, end_time, timezone):
+    def __init__(
+        self,
+        strategy: BaseStrategy,
+        risk_manager: RiskManager,
+        symbols: List[str],
+        start_time,
+        end_time,
+        timezone,
+    ):
         self.strategy = strategy
         self.risk_manager = risk_manager
         self.symbols = symbols

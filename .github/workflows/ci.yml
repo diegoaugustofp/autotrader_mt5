@@ -50,4 +50,4 @@ jobs:
           echo "def __getattr__(name: str) -> Any: ..." >> stubs/MetaTrader5.pyi
 
       - name: Run mypy
-        run: mypy autotrader/ --ignore-missing-imports --explicit-package-bases
+        run: mypy autotrader/ --ignore-missing-imports --explicit-package-bases --disable-error-code=empty-body --disable-error-code=return

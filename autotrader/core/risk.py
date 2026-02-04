@@ -21,9 +21,7 @@ class RiskManager:
     def __init__(self, config: RiskConfig):
         self.config = config
         self.state = RiskState(
-            current_daily_pnl=0.0,
-            trades_today=0,
-            last_reset_date=date.today()
+            current_daily_pnl=0.0, trades_today=0, last_reset_date=date.today()
         )
 
     def _check_and_reset_daily_state(self) -> None:
@@ -31,9 +29,7 @@ class RiskManager:
         today = date.today()
         if self.state.last_reset_date != today:
             self.state = RiskState(
-                current_daily_pnl=0.0,
-                trades_today=0,
-                last_reset_date=today
+                current_daily_pnl=0.0, trades_today=0, last_reset_date=today
             )
 
     def can_open_new_trade(self) -> bool:
@@ -44,7 +40,6 @@ class RiskManager:
         self._check_and_reset_daily_state()
         ...
 
-    def calculate_position_size(self, account_balance: float,
-                                stop_loss_points: float,
-                                tick_value: float) -> float:
-        ...
+    def calculate_position_size(
+        self, account_balance: float, stop_loss_points: float, tick_value: float
+    ) -> float: ...
