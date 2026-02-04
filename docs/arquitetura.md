@@ -131,3 +131,131 @@ autotrader_mt5/
     arquitetura.md
   pyproject.toml
   README.md
+```
+
+5. Estratégia de evolução
+- Manter a arquitetura em camadas, adicionando novos adaptadores (por exemplo, outro broker) sem alterar o domínio. [web:44][web:46]
+- Permitir que novas estratégias sejam adicionadas como novas classes que estendem BaseStrategy. [web:32][web:44]
+- Implementar modos distintos (backtest/simulação/live) definindo apenas camadas de execução e fonte de dados. [web:44][web:47]
+
+ ´´´ text
+ 
+***
+
+## Exemplo de estratégia de mean reversion em ETF americano
+
+Abaixo um exemplo concreto de implementação de estratégia de **mean reversion** sobre um ETF (por exemplo, SPY), inspirada em abordagens comuns com média móvel e Z-score.[5][6][1]
+
+### Estratégia: Mean Reversion simples em SPY
+
+Ideia:  
+- Calcular média móvel e desvio padrão de N períodos.[6][1]
+- Calcular Z-score \(z = (preço\_atual - média) / desvio\_padrão\).[1]
+- Se \(z < -z\_limiar\): sinal de compra (preço “barato” versus média).[5][1]
+- Se \(z > z\_limiar\): sinal de venda (preço “caro” versus média).[1][5]
+- Caso contrário: segurar posição.[6][1]
+
+### `autotrader/core/strategies.py` (extensão)
+
+```python
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Dict, Any, List
+import numpy as np  # para cálculo de média e desvio padrão
+
+@dataclass
+class StrategyParams:
+    name: str
+    description: str
+    type: str
+    config: Dict[str, Any]
+
+class BaseStrategy(ABC):
+    def __init__(self, params: StrategyParams):
+        self.params = params
+
+    @abstractmethod
+    def generate_signal(self, market_data: Dict[str, Any]) -> str:
+        ...
+
+class MeanReversionStrategy(BaseStrategy):
+    """
+    Estratégia de Mean Reversion baseada em Z-score sobre preço de fechamento.
+    market_data deve conter uma lista de fechamentos recentes em 'close_prices'.
+    """
+    def generate_signal(self, market_data: Dict[str, Any]) -> str:
+        closes: List[float] = market_data["close_prices"]
+        window: int = self.params.config.get("window", 20)
+        z_entry: float = self.params.config.get("z_entry", 2.0)
+
+        if len(closes) < window:
+            return "HOLD"
+
+        recent = np.array(closes[-window:])
+        mean = recent.mean()
+        std = recent.std(ddof=1) if recent.std(ddof=1) > 0 else 1e-8
+        last_price = closes[-1]
+        z_score = (last_price - mean) / std
+
+        if z_score <= -z_entry:
+            return "BUY"
+        elif z_score >= z_entry:
+            return "SELL"
+        return "HOLD"
+```
+Exemplo de uso no scheduler (trecho conceitual)
+
+``` python
+from datetime import datetime, timedelta
+from autotrader.core.strategies import StrategyParams, MeanReversionStrategy
+from autotrader.core.risk import RiskConfig, RiskManager
+from autotrader.core.scheduler import StrategyInstance, Scheduler
+from autotrader.infra.mt5_client import MT5Client, MT5Config
+
+# Configuração MT5 (exemplo)
+mt5_config = MT5Config(
+    login=123456,
+    password="***",
+    server="Broker-Server",
+    path="C:/Program Files/MetaTrader 5/terminal64.exe",
+)
+
+mt5_client = MT5Client(mt5_config)
+
+# Estratégia mean reversion em SPY
+params = StrategyParams(
+    name="MR_SPY",
+    description="Mean Reversion simples em SPY com Z-score",
+    type="mean_reversion",
+    config={"window": 20, "z_entry": 2.0},
+)
+
+strategy = MeanReversionStrategy(params)
+
+risk_config = RiskConfig(
+    max_risk_per_trade=1.0,
+    max_daily_drawdown=3.0,
+    max_trades_per_day=10,
+)
+risk_manager = RiskManager(risk_config)
+
+start_time = datetime.now().replace(hour=9, minute=35, second=0, microsecond=0)
+end_time = datetime.now().replace(hour=15, minute=55, second=0, microsecond=0)
+
+instance = StrategyInstance(
+    strategy=strategy,
+    risk_manager=risk_manager,
+    symbols=["SPY"],
+    start_time=start_time,
+    end_time=end_time,
+    timezone="America/New_York",
+)
+
+scheduler = Scheduler(mt5_client=mt5_client, strategies=[instance])
+
+# Em produção, chamaríamos:
+# scheduler.run_forever()
+
+```
+
+
