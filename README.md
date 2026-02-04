@@ -54,5 +54,15 @@ autotrader_mt5/
   docs/
     requisitos_funcionais.md
     arquitetura.md
+  .github/
+    workflows/
+      ci.yml
   pyproject.toml / setup.cfg
   README.md
+
+## CI/CD
+
+This project uses GitHub Actions for continuous integration. The pipeline runs on every push and pull request to the `main` branch:
+
+- **Lint**: Runs Ruff linter and formatter checks
+- **Typecheck**: Runs mypy for static type checking
