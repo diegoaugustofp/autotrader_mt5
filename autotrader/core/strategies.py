@@ -1,13 +1,26 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from enum import Enum
 from typing import Dict, Any
+
+
+class StrategyType(Enum):
+    """Enum for strategy types providing type safety and faster comparisons."""
+
+    MEAN_REVERSION = "mean_reversion"
+    TREND_FOLLOWING = "trend_following"
+    BREAKOUT = "breakout"
+    SCALPING = "scalping"
+    ARBITRAGE = "arbitrage"
+
 
 @dataclass
 class StrategyParams:
     name: str
     description: str
-    type: str  # "mean_reversion", "trend_following", etc.
+    type: StrategyType
     config: Dict[str, Any]
+
 
 class BaseStrategy(ABC):
     def __init__(self, params: StrategyParams):
