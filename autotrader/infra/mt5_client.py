@@ -18,6 +18,8 @@ class MT5Client:
 
     def connect(self) -> bool:
         # inicializa e faz login no MT5
+        if not mt5.initialize(path=self.config.path):
+            return False
         return mt5.login(
             login=self.config.login,
             password=self.config.password,
