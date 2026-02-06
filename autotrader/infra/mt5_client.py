@@ -53,7 +53,7 @@ class MT5Client:
 
     def get_open_positions(self) -> List[Dict[str, Any]]: 
         positions = mt5.positions_get()
-        return [positions._asdict() for position in positions] if positions is not None else []
+        return [position._asdict() for position in positions] if positions is not None else []
 
     def get_history_deals(self, from_time, to_time) -> List[Dict[str, Any]]: 
         deals = mt5.history_deals_get(from_time, to_time)
