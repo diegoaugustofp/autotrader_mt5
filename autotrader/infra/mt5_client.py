@@ -57,4 +57,4 @@ class MT5Client:
 
     def get_history_deals(self, from_time, to_time) -> List[Dict[str, Any]]: 
         deals = mt5.history_deals_get(from_time, to_time)
-        return [deals._asdict() for deal in deals] if deals is not None else []
+        return [deal._asdict() for deal in deals] if deals is not None else []
