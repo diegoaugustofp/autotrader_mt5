@@ -18,6 +18,9 @@ class MT5Client:
 
     def connect(self) -> bool:
         # inicializa e faz login no MT5
+        if not mt5.initialize(path=self.config.path):
+            return False
+
         return mt5.login(
             login=self.config.login,
             password=self.config.password,
@@ -29,12 +32,12 @@ class MT5Client:
 
     def get_ticks(self, symbol: str, from_time, to_time) -> List[Dict[str, Any]]: 
         ticks = mt5.copy_ticks_range(symbol, from_time, to_time, mt5.COPY_TICKS_ALL)
-        return [tick._asdict() for tick in ticks] if ticks is not None else []
+        return [dict(zip(ticks.dtype.names, tick)) for tick in ticks] if ticks is not None else []
 
 
     def get_bars(self, symbol: str, timeframe, count: int) -> List[Dict[str, Any]]: 
         bars = mt5.copy_rates_from_pos(symbol, timeframe, 0, count)
-        return [bar._asdict() for bar in bars] if bars is not None else []     
+        return [dict(zip(bars.dtype.names, bar)) for bar in bars] if bars is not None else []     
 
     def send_order(
         self,symbol: str,volume: float,order_type: str,sl: Optional[float] = None,tp: Optional[float] = None,comment: str = "",) -> Dict[str, Any]: 
@@ -43,10 +46,12 @@ class MT5Client:
                 "symbol": symbol,
                 "volume": volume,
                 "type": mt5.ORDER_TYPE_BUY if order_type == "buy" else mt5.ORDER_TYPE_SELL,
-                "sl": sl,
-                "tp": tp,
                 "comment": comment,
             }
+            if sl is not None:
+                request["sl"] = sl
+            if tp is not None:
+                request["tp"] = tp
             result = mt5.order_send(request)
             return result._asdict() if result is not None else {"error": "Failed to send order"}
             
