@@ -31,7 +31,7 @@ class MT5Client:
 
     def get_ticks(self, symbol: str, from_time, to_time) -> List[Dict[str, Any]]: 
         ticks = mt5.copy_ticks_range(symbol, from_time, to_time, mt5.COPY_TICKS_ALL)
-        return [tick._asdict() for tick in ticks] if ticks is not None else []
+        return [dict(zip(ticks.dtype.names, tick)) for tick in ticks] if ticks is not None else []
 
 
     def get_bars(self, symbol: str, timeframe, count: int) -> List[Dict[str, Any]]: 
