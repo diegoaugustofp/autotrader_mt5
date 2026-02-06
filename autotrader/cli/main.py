@@ -13,10 +13,10 @@ def run_live():
 
     # Configuração MT5 (exemplo)
     mt5_config = MT5Config(
-        login=123456,
-        password="***",
-        server="Broker-Server",
-        path="C:/Program Files/MetaTrader 5/terminal64.exe",
+        login=969808,
+        password="BXMhqb7&",
+        server="ActivTradesCorp-Server",
+        path="C:\ProgramData\Microsoft\Windows\Start Menu\Programs\MetaTrader 5 - ActivTrades/ActivTrades MetaTrader 5.exe",
     )
 
     mt5_client = MT5Client(mt5_config)
