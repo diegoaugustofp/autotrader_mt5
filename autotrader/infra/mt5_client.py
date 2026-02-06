@@ -18,11 +18,11 @@ class MT5Client:
 
     def connect(self) -> bool:
         # inicializa e faz login no MT5
-        mt5.login(
+        return mt5.login(
             login=self.config.login,
             password=self.config.password,
             server=self.config.server,
-        )   
+        )
 
     def disconnect(self) -> None: 
         mt5.shutdown()
