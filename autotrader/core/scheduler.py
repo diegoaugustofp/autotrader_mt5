@@ -39,6 +39,6 @@ class Scheduler:
             for s in self._active_strategies():
                 # checar janela de horário, risco etc.
                 # buscar dados de mercado, gerar sinal, enviar ordens
-                ...
+                pass
             # dormir um pequeno intervalo
-            ...
+            pass

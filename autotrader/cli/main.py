@@ -56,7 +56,7 @@ def run_live():
 @app.command()
 def backtest(strategy_name: str, symbol: str):
     # carregar config de estratégia, rodar backtest
-    ...
+    pass
 
 
 if __name__ == "__main__":

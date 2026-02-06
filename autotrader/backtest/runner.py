@@ -67,4 +67,4 @@ class BacktestRunner:
         _data = self._data_cache.get(symbol, from_date, to_date, timeframe)
         # executar lógica de sinais e risco
         # retornar métricas
-        ...
+        pass

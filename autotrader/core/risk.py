@@ -34,12 +34,13 @@ class RiskManager:
 
     def can_open_new_trade(self) -> bool:
         self._check_and_reset_daily_state()
-        ...
+        pass
 
     def register_trade_result(self, pnl: float) -> None:
         self._check_and_reset_daily_state()
-        ...
+        pass
 
     def calculate_position_size(
         self, account_balance: float, stop_loss_points: float, tick_value: float
-    ) -> float: ...
+    ) -> float: 
+        pass
