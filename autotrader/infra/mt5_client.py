@@ -36,7 +36,7 @@ class MT5Client:
 
     def get_bars(self, symbol: str, timeframe, count: int) -> List[Dict[str, Any]]: 
         bars = mt5.copy_rates_from_pos(symbol, timeframe, 0, count)
-        return [bar._asdict() for bar in bars] if bars is not None else []     
+        return [dict(zip(bars.dtype.names, bar)) for bar in bars] if bars is not None else []     
 
     def send_order(
         self,symbol: str,volume: float,order_type: str,sl: Optional[float] = None,tp: Optional[float] = None,comment: str = "",) -> Dict[str, Any]: 
