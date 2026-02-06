@@ -47,10 +47,12 @@ class MT5Client:
                 "symbol": symbol,
                 "volume": volume,
                 "type": mt5.ORDER_TYPE_BUY if order_type == "buy" else mt5.ORDER_TYPE_SELL,
-                "sl": sl,
-                "tp": tp,
                 "comment": comment,
             }
+            if sl is not None:
+                request["sl"] = sl
+            if tp is not None:
+                request["tp"] = tp
             result = mt5.order_send(request)
             return result._asdict() if result is not None else {"error": "Failed to send order"}
             
