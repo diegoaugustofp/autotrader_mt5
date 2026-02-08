@@ -25,7 +25,7 @@ def run_live():
     params = StrategyParams(
         name="MR_SPY",
         description="Mean Reversion simples em SPY com Z-score",
-        type="mean_reversion",
+        type=StrategyType.MEAN_REVERSION,
         config={"window": 20, "z_entry": 2.0},
     )
 
